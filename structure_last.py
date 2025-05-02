@@ -71,13 +71,13 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 class RNASecondaryStructureModel(nn.Module):
-    def __init__(self, input_vocab_size, num_classes, d_model=192, num_layers=12, nhead=12, dropout=0.1):
+    def __init__(self, input_vocab_size, num_classes, d_model=96, num_layers=8, nhead=8, dropout=0.1):
         super().__init__()
         self.embedding = nn.Embedding(input_vocab_size, d_model)
         self.pos_encoder = PositionalEncoding(d_model, dropout)
         encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, dropout=dropout,batch_first=False)
         self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
-        self.fc = nn.Linear(d_model, num_classes)
+        self.fc = nn.Linear(192, num_classes)
 
     def forward(self, src, src_key_padding_mask=None):
         embedded = self.embedding(src)
